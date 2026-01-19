@@ -47,7 +47,7 @@ class Ntlm(object):
 
     :param ntlm_compatibility: The Lan Manager Compatibility Level to use withe the auth message - Default 3
                                 This is set by an Administrator in the registry key
-                                'HKLM\SYSTEM\CurrentControlSet\Control\Lsa\LmCompatibilityLevel'
+                                'HKLM\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\LmCompatibilityLevel'
                                 The values correspond to the following;
                                     0 : LM and NTLMv1
                                     1 : LM, NTLMv1 and NTLMv1 with Extended Session Security

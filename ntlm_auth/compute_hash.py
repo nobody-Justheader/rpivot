@@ -32,7 +32,7 @@ def _lmowfv1(password, lmhash):
 
     # fix the password length to 14 bytes
     if lmhash is not None:
-        return lmhash.decode('hex')
+        return bytes.fromhex(lmhash)
 
     password = password.upper()
     lm_pw = password[0:14]
@@ -60,9 +60,28 @@ def _ntowfv1(password, nthash):
     :return digest: An NT hash of the password supplied
     """
     if nthash is not None:
-        return nthash.decode('hex')
+        return bytes.fromhex(nthash)
 
     digest = hashlib.new('md4', password.encode('utf-16le')).digest()
+    return digest
+
+def _ntowfv2(user_name, password, nthash, domain_name):
+    """
+    [MS-NLMP] v28.0 2016-07-14
+
+    3.3.2 NTLM v2 Authentication
+    Same function as NTOWFv2 (and LMOWFv2) in document to create a one way hash of the password.
+    This combines some extra security features over the v1 calculations used in NTLMv2 auth.
+
+    :param user_name: The user name of the user we are trying to authenticate with
+    :param password: The password of the user we are trying to authenticate with
+    :param domain_name: The domain name of the user account we are authenticated with
+    :return digest: An NT hash of the parameters supplied
+    """
+    digest = _ntowfv1(password, nthash)
+    digest = hmac.new(digest, (user_name.upper() + domain_name).encode('utf-16le')).digest()
+
+
     return digest
 
 def _ntowfv2(user_name, password, nthash, domain_name):

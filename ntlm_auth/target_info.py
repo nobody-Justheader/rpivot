@@ -8,10 +8,7 @@
 """
 
 import struct
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
+from collections import OrderedDict
 
 class TargetInfo(object):
     MSV_AV_EOL                  = 0x00

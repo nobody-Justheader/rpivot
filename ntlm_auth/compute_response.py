@@ -382,11 +382,7 @@ class ComputeResponse():
         channel_bindings_struct_data = gss_channel_bindings.get_data()
         channel_bindings_hash = hashlib.md5(channel_bindings_struct_data).hexdigest()
 
-        try:
-            cbt_value = bytearray.fromhex(channel_bindings_hash)
-        except TypeError:
-            # Work-around for Python 2.6 bug
-            cbt_value = bytearray.fromhex(unicode(channel_bindings_hash))
+        cbt_value = bytes.fromhex(channel_bindings_hash)
 
         channel_bindings = bytes(cbt_value)
         return channel_bindings
